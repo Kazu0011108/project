@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\Category;
 
 class ProductController extends Controller
 {
@@ -25,7 +26,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $categories = Category::all();
+ 
+         return view('products.create', compact('categories'));
     }
 
     /**
@@ -40,6 +43,7 @@ class ProductController extends Controller
         $product->name = $request->input('name');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
+        $product->category_id = $request->input('category_id');
         $product->save();
 
         return redirect()->route('products.show', ['id' => $product->id]);
@@ -65,7 +69,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = Category::all();
+ 
+         return view('products.edit', compact('product', 'categories'));
     }
 
     /**
@@ -77,7 +83,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        $product->price = $request->input('price');
+        $product->category_id = $request->input('category_id');
+        $product->update();
+
+        return redirect()->route('products.show', ['id' => $product->id]);
     }
 
     /**
@@ -88,6 +100,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product->delete();
+ 
+        return redirect()->route('products.index');
     }
 }
