@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Auth::routes();
+
+Route::resource('products', 'ProductController');
+Auth::routes(['verify' => true]);
 
 //Route::get('products', 'ProductController');
+Route::get('/home', 'HomeController@index')->name('home');
